@@ -26,9 +26,9 @@ class ScoreFactory
     }
 
     /**
-     * @return HsClientInterface
+     * @return HsClientFacadeInterface
      */
-    private function createHsClientFacade(): HsClientInterface
+    private function createHsClientFacade(): HsClientFacadeInterface
     {
         return new HsClientFacade();
     }

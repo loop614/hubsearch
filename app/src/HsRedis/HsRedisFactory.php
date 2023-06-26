@@ -8,17 +8,23 @@ use Predis\Client as PredisClient;
 
 class HsRedisFactory
 {
+    /**
+     * @return HsRedisInterface
+     */
     public static function createHsRedis(): HsRedisInterface
     {
         return new HsRedis(self::createPredisClient());
     }
 
+    /**
+     * @return PredisClient
+     */
     public static function createPredisClient(): PredisClient
     {
         return new PredisClient([
-            'scheme' => 'tcp',
-            'host'   => 'redis_hubsearch',
-            'port'   => 6379,
+            'scheme' => getenv('redis_scheme'),
+            'host'   => getenv('redis_host'),
+            'port'   => getenv('redis_port'),
         ]);
     }
 }

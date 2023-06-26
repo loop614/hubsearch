@@ -2,20 +2,21 @@
 
 namespace App\HsRedis\Model;
 
+use App\Score\ScoreData;
+
 interface HsRedisInterface
 {
     /**
-     * @param string $term
+     * @param ScoreData $scoreData
      *
-     * @return float
+     * @return ScoreData
      */
-    public function getScoreByTerm(string $term): float;
+    public function getScore(ScoreData $scoreData): ScoreData;
 
     /**
-     * @param string $term
-     * @param float $value
+     * @param ScoreData $scoreData
      *
      * @return void
      */
-    public function setScoreByTerm(string $term, float $value): void;
+    public function setScore(ScoreData $scoreData): void;
 }

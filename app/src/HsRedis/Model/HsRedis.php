@@ -2,6 +2,8 @@
 
 namespace App\HsRedis\Model;
 
+use App\HsRedis\HsRedisConfig;
+use App\Score\ScoreData;
 use Predis\Client as PredisClient;
 
 class HsRedis implements HsRedisInterface
@@ -12,7 +14,6 @@ class HsRedis implements HsRedisInterface
     private PredisClient $predisClient;
 
     const REDIS_PREFIX = 'kv';
-    const GITHUB_PREFIX = 'gh';
 
     /**
      * @param PredisClient $redisClient
@@ -23,40 +24,44 @@ class HsRedis implements HsRedisInterface
     }
 
     /**
-     * @param string $term
+     * @param ScoreData $scoreData
      *
-     * @return float
+     * @return ScoreData
      */
-    public function getScoreByTerm(string $term): float
+    public function getScore(ScoreData $scoreData): ScoreData
     {
-        return $this->predisClient->getKey($this->generateKeyForTerm($term));
+        assert(is_array($scoreData->getSite()), HsRedisConfig::KEY_PER_SITE);
+
+        $score = $this->predisClient->getKey($this->generateKey($scoreData));
+        $scoreData->setScore($score);
+
+        return $scoreData;
     }
 
     /**
-     * @param string $term
-     * @param float $value
+     * @param ScoreData $scoreData
      *
      * @return void
      */
-    public function setScoreByTerm(string $term, float $value): void
+    public function setScore(ScoreData $scoreData): void
     {
-        $this->predisClient->set($this->generateKeyForTerm($term), $value);
+        $this->predisClient->set($this->generateKey($scoreData), $scoreData->getScore());
     }
 
     /**
-     * @param string $term
+     * @param ScoreData $scoreData
      *
      * @return string
      */
-    private function generateKeyForTerm(string $term): string
+    private function generateKey(ScoreData $scoreData): string
     {
         return join(
             [
                 self::REDIS_PREFIX,
                 ':',
-                self::GITHUB_PREFIX,
+                HsRedisConfig::KEY_PER_SITE[$scoreData->getSite()],
                 ':',
-                $term
+                $scoreData->getTerm()
             ]
         );
     }

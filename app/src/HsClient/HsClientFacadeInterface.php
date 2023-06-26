@@ -2,11 +2,14 @@
 
 namespace App\HsClient;
 
+use App\Score\ScoreData;
+
 interface HsClientFacadeInterface
 {
     /**
-     * @param string $term
-     * @return float
+     * @param ScoreData $scoreData
+     *
+     * @return ScoreData
      */
-    public function getScoreForTerm(string $term): float;
+    public function getScore(ScoreData $scoreData): ScoreData;
 }

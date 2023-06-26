@@ -2,27 +2,28 @@
 
 namespace App\HsRedis;
 
+use App\Score\ScoreData;
+
 class HsRedisFacade implements HsRedisFacadeInterface
 {
     /**
-     * @param string $key
+     * @param ScoreData $scoreData
      *
-     * @return float
+     * @return ScoreData
      */
-    public function getScoreByTerm(string $key): float
+    public function getScore(ScoreData $scoreData): ScoreData
     {
         return HsRedisFactory::createHsRedis()
-            ->getScoreByTerm($key);
+            ->getScore($scoreData);
     }
 
     /**
-     * @param string $key
-     * @param float $value
+     * @param ScoreData $scoreData
      *
      * @return void
      */
-    public function setScoreByTerm(string $key, float $value): void
+    public function setScore(ScoreData $scoreData): void
     {
-        HsRedisFactory::createHsRedis()->setScoreByTerm($key, $value);
+        HsRedisFactory::createHsRedis()->setScore($scoreData);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\HsClient\Model;
 
 use App\HsRedis\HsRedisFacade;
+use App\Score\ScoreData;
 
 class HsClient implements HsClientInterface
 {
@@ -18,13 +19,18 @@ class HsClient implements HsClientInterface
     }
 
     /**
-     * @param string $term
+     * @param ScoreData $scoreData
      *
      * @return float
      */
-    public function getScoreForTerm(string $term): float
+    public function getScore(ScoreData $scoreData): ScoreData
     {
-        $this->hsRedisFacade->setKeyByTerm($term);
-        return 11.11;
+        // get dazzle get my values
+
+        // set it to redis
+        $this->hsRedisFacade->setKey($scoreData, 11.11);
+        $scoreData->setScore(11.11);
+
+        return $scoreData;
     }
 }

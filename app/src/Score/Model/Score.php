@@ -4,6 +4,7 @@ namespace App\Score\Model;
 
 use App\HsClient\HsClientFacadeInterface;
 use App\HsRedis\HsRedisFacadeInterface;
+use App\Score\ScoreData;
 
 class Score implements ScoreInterface
 {
@@ -28,18 +29,18 @@ class Score implements ScoreInterface
     }
 
     /**
-     * @param string $term
+     * @param ScoreData $scoreData
      *
-     * @return float
+     * @return ScoreData
      */
-    public function getKeyByTerm(string $term): float
+    public function getScore(ScoreData $scoreData): ScoreData
     {
-        $score = $this->hsRedisFacade->getScoreByTerm($term);
+        $scoreData = $this->hsRedisFacade->getScore($scoreData);
 
-        if (!$score) {
-            $score = $this->hsClientFacade->getScoreForTerm($term);
+        if (!$scoreData->getScore()) {
+            $scoreData = $this->hsClientFacade->getScore($scoreData);
         }
 
-        return $score;
+        return $scoreData;
     }
 }

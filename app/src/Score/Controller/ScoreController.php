@@ -3,24 +3,40 @@
 namespace App\Score\Controller;
 
 use App\HsRedis\ScoreFactory;
+use App\Score\ScoreData;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class ScoreController
+class ScoreController extends AbstractController
 {
-    public function index(Request $reuqest): JsonResponse
-    {
-        $term = (string) $reuqest->query->get('term', false);
+    const MAX_TERM_SIZE = 16;
 
-        if (!$term || strlen($term) > 64) {
-            return new JsonResponse([]);
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function index(Request $request): JsonResponse
+    {
+        $term = (string) $request->query->get('term', false);
+
+        if (!$term || strlen($term) > self::MAX_TERM_SIZE) {
+            throw new BadRequestHttpException();
         }
 
-        $score = (new ScoreFactory())->createScore()->getKeyByTerm($term);
+        $scoreDataRequest = new ScoreData('github', $term);
+        $scoreDataResponse = (new ScoreFactory())
+            ->createScore()
+            ->getScore($scoreDataRequest);
 
         return new JsonResponse([
-            'term' => $term,
-            'score' => $score
+            'data' => [
+                'term' => $scoreDataResponse->getTerm(),
+                'score' => $scoreDataResponse->getScore(),
+                'site' => $scoreDataResponse->getSite(),
+            ]
         ]);
     }
 }

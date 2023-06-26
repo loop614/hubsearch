@@ -2,12 +2,14 @@
 
 namespace App\Score\Model;
 
+use App\Score\ScoreData;
+
 interface ScoreInterface
 {
     /**
-     * @param string $term
+     * @param ScoreData $scoreData
      *
-     * @return float
+     * @return ScoreData $scoreData
      */
-    public function getKeyByTerm(string $term): float;
+    public function getScore(ScoreData $scoreData): ScoreData;
 }

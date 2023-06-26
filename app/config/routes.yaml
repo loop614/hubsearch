@@ -1,8 +1,9 @@
-controllers:
+v1_controllers:
     resource:
         path: ../src/Score/Controller/
         namespace: App\Controller
     type: attribute
+    prefix: '/v1'
 
 score:
     path: /score
