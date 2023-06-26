@@ -29,7 +29,7 @@ class ScoreController extends AbstractController
         $scoreDataRequest = new ScoreData('github', $term);
         $scoreDataResponse = (new ScoreFactory())
             ->createScore()
-            ->getScore($scoreDataRequest);
+            ->hydrateScore($scoreDataRequest);
 
         return new JsonResponse([
             'data' => [

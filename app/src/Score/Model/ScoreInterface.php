@@ -11,5 +11,5 @@ interface ScoreInterface
      *
      * @return ScoreData $scoreData
      */
-    public function getScore(ScoreData $scoreData): ScoreData;
+    public function hydrateScore(ScoreData $scoreData): ScoreData;
 }

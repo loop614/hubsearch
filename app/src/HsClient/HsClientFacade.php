@@ -2,6 +2,7 @@
 
 namespace App\HsClient;
 
+use App\HsClient\Exception\AdapterNotFoundException;
 use App\Score\ScoreData;
 
 class HsClientFacade implements HsClientFacadeInterface
@@ -9,11 +10,15 @@ class HsClientFacade implements HsClientFacadeInterface
     /**
      * @param ScoreData $scoreData
      *
-     * @return ScoreData
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws AdapterNotFoundException
+     *
+     * @return string[]
      */
-    public function getScore(ScoreData $scoreData): ScoreData
+    public function getTexts(ScoreData $scoreData): array
     {
-        return HsClientFactory::createHsClient()
-            ->getScore($scoreData);
+        return (new HsClientFactory)
+            ->createHsClient()
+            ->getTexts($scoreData);
     }
 }

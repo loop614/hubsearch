@@ -2,35 +2,37 @@
 
 namespace App\HsClient\Model;
 
-use App\HsRedis\HsRedisFacade;
+use App\HsClient\Adapter\SiteAdapterInterface;
+use App\HsClient\Exception\AdapterNotFoundException;
 use App\Score\ScoreData;
 
 class HsClient implements HsClientInterface
 {
-    private DazzleClient $dazzleClient;
-    private HsRedisFacade $hsRedisFacade;
+    private array $adapters;
 
     /**
-     * @param DazzleClient $dazzleClient
+     * @param SiteAdapterInterface[]
      */
-    public function __construct(DazzleClient $dazzleClient)
+    public function __construct(array $adapters)
     {
-        $this->dazzleClient = $dazzleClient;
+        $this->adapters = $adapters;
     }
 
     /**
      * @param ScoreData $scoreData
      *
-     * @return float
+     * @return array|string[]
+     *
+     * @throws AdapterNotFoundException
      */
-    public function getScore(ScoreData $scoreData): ScoreData
+    public function getTexts(ScoreData $scoreData): array
     {
-        // get dazzle get my values
+        foreach ($this->adapters as $adapter) {
+            if ($adapter->isApplicable($scoreData)) {
+                return $adapter->fetchTexts();
+            }
+        }
 
-        // set it to redis
-        $this->hsRedisFacade->setKey($scoreData, 11.11);
-        $scoreData->setScore(11.11);
-
-        return $scoreData;
+        throw new AdapterNotFoundException();
     }
 }

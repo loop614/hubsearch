@@ -13,7 +13,7 @@ class HsRedisFacade implements HsRedisFacadeInterface
      */
     public function getScore(ScoreData $scoreData): ScoreData
     {
-        return HsRedisFactory::createHsRedis()
+        return (new HsRedisFactory())->createHsRedis()
             ->getScore($scoreData);
     }
 
@@ -24,6 +24,8 @@ class HsRedisFacade implements HsRedisFacadeInterface
      */
     public function setScore(ScoreData $scoreData): void
     {
-        HsRedisFactory::createHsRedis()->setScore($scoreData);
+        (new HsRedisFactory())
+            ->createHsRedis()
+            ->setScore($scoreData);
     }
 }

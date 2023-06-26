@@ -7,6 +7,7 @@ init:
 
 install:
 	$(HUBSEARCHCOMPOSER) require predis/predis
+	$(HUBSEARCHCOMPOSER) require guzzlehttp/guzzle
 	$(HUBSEARCHCOMPOSER) install
 
 temp:
@@ -24,7 +25,12 @@ console:
 per:
 	$(HUBSEARCH) chmod a+rwx -R .
 
-rebuild:
+reinstall_composer:
+	rm -rf vendor/*
+	$(HUBSEARCHCOMPOSER) install
+	$(HUBSEARCH) chmod a+rwx -R .
+
+rebuild_docker:
 	docker compose build --no-cache
 	docker compose up --remove-orphans
 

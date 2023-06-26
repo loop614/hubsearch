@@ -11,7 +11,7 @@ class HsRedisFactory
     /**
      * @return HsRedisInterface
      */
-    public static function createHsRedis(): HsRedisInterface
+    public function createHsRedis(): HsRedisInterface
     {
         return new HsRedis(self::createPredisClient());
     }
@@ -19,7 +19,7 @@ class HsRedisFactory
     /**
      * @return PredisClient
      */
-    public static function createPredisClient(): PredisClient
+    public function createPredisClient(): PredisClient
     {
         return new PredisClient([
             'scheme' => getenv('redis_scheme'),

@@ -9,7 +9,8 @@ interface HsClientInterface
     /**
      * @param ScoreData $scoreData
      *
-     * @return ScoreData
+     * @return string[]
+     *
      */
-    public function getScore(ScoreData $scoreData): ScoreData;
+    public function getTexts(ScoreData $scoreData): array;
 }
