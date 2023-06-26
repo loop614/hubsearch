@@ -28,12 +28,14 @@ class HsRedis implements HsRedisInterface
      *
      * @return ScoreData
      */
-    public function getScore(ScoreData $scoreData): ScoreData
+    public function hydrateScore(ScoreData $scoreData): ScoreData
     {
-        assert(is_array($scoreData->getSite()), HsRedisConfig::KEY_PER_SITE);
+        assert(isset(HsRedisConfig::KEY_PER_SITE[$scoreData->getSite()]));
+        $score = $this->predisClient->get($this->generateKey($scoreData));
 
-        $score = $this->predisClient->getKey($this->generateKey($scoreData));
-        $scoreData->setScore($score);
+        if (is_numeric($score)) {
+            $scoreData->setScore(floatval($score));
+        }
 
         return $scoreData;
     }
@@ -45,7 +47,9 @@ class HsRedis implements HsRedisInterface
      */
     public function setScore(ScoreData $scoreData): void
     {
-        $this->predisClient->set($this->generateKey($scoreData), $scoreData->getScore());
+        $key = $this->generateKey($scoreData);
+        $this->predisClient->set($key, $scoreData->getScore());
+        $this->predisClient->expire($key, HsRedisConfig::KEY_TTL);
     }
 
     /**

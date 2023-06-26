@@ -29,7 +29,8 @@ class HsClient implements HsClientInterface
     {
         foreach ($this->adapters as $adapter) {
             if ($adapter->isApplicable($scoreData)) {
-                return $adapter->fetchTexts();
+                $token = $adapter->authenticate();
+                return $adapter->fetchTexts($token);
             }
         }
 

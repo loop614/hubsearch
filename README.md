@@ -1,6 +1,6 @@
 ## Description
 - example symfony project
-- search github issues and display number of rocks/sucks words with 1-10 grade
+- search Github issues and display number of rocks/sucks words with 1-10 grade
 - has redis cache
 
 ## Requirements
@@ -8,8 +8,12 @@
 - docker with compose
 
 ## Quick start
-- make init && make install
+- make init
 - open localhost:54321/score on your favourite browser
+
+## Run tests
+- make test_init
+- make test
 
 ## TODOs
 - run phpcodestyle

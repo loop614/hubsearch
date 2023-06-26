@@ -17,7 +17,9 @@ interface SiteAdapterInterface
     public function authenticate(): string;
 
     /**
-     * @return string[]
+     * @param string $token
+     *
+     * @return array
      */
-    public function fetchTexts(): array;
+    public function fetchTexts(string $token): array;
 }

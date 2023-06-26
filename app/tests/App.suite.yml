@@ -1,0 +1,4 @@
+actor: AppTester
+suite_namespace: App\Tests\App
+modules:
+    enabled: []

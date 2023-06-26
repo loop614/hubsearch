@@ -1,10 +1,9 @@
-v1_controllers:
+controllers:
     resource:
         path: ../src/Score/Controller/
         namespace: App\Controller
     type: attribute
-    prefix: '/v1'
 
 score:
     path: /score
-    controller: App\Score\ScoreController::index
+    controller: App\Score\Controller\ScoreController::index

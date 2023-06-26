@@ -21,10 +21,6 @@ class HsRedisFactory
      */
     public function createPredisClient(): PredisClient
     {
-        return new PredisClient([
-            'scheme' => getenv('redis_scheme'),
-            'host'   => getenv('redis_host'),
-            'port'   => getenv('redis_port'),
-        ]);
+        return new PredisClient(HsRedisConfig::SCHEME . '://' . HsRedisConfig::HOST . ':' . HsRedisConfig::PORT);
     }
 }

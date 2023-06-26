@@ -11,7 +11,7 @@ interface HsRedisInterface
      *
      * @return ScoreData
      */
-    public function getScore(ScoreData $scoreData): ScoreData;
+    public function hydrateScore(ScoreData $scoreData): ScoreData;
 
     /**
      * @param ScoreData $scoreData

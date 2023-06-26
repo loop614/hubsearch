@@ -20,13 +20,13 @@ class ScoreController extends AbstractController
      */
     public function index(Request $request): JsonResponse
     {
-        $term = (string) $request->query->get('term', false);
+        $term = $request->query->get('term', false);
 
         if (!$term || strlen($term) > self::MAX_TERM_SIZE) {
             throw new BadRequestHttpException();
         }
 
-        $scoreDataRequest = new ScoreData('github', $term);
+        $scoreDataRequest = new ScoreData('github', (string) $term);
         $scoreDataResponse = (new ScoreFactory())
             ->createScore()
             ->hydrateScore($scoreDataRequest);

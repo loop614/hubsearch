@@ -36,7 +36,7 @@ class Score implements ScoreInterface
      */
     public function hydrateScore(ScoreData $scoreData): ScoreData
     {
-        $scoreData = $this->hsRedisFacade->getScore($scoreData);
+        $scoreData = $this->hsRedisFacade->hydrateScore($scoreData);
         if (!$scoreData->getScore()) {
             $texts = $this->hsClientFacade->getTexts($scoreData);
             $score = $this->calculateScore($texts);

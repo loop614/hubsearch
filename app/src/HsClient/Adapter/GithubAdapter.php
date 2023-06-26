@@ -13,7 +13,7 @@ class GithubAdapter extends SiteAdapter
      */
     public function isApplicable(ScoreData $scoreData): bool
     {
-        return $scoreData->getSite() === 'Github';
+        return $scoreData->getSite() === 'github';
     }
 
     /**
@@ -26,6 +26,8 @@ class GithubAdapter extends SiteAdapter
         if (self::$baererToken != '') {
             return self::$baererToken;
         }
+
+        die('we have to auth');
         $response = $this->guzzleClient->get(
             getenv('github_auth_path')
         );
@@ -39,7 +41,7 @@ class GithubAdapter extends SiteAdapter
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function fetchTexts(): array
+    public function fetchTexts(string $token): array
     {
         $texts = [];
         // get dazzle get my values

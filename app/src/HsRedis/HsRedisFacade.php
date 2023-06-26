@@ -11,10 +11,10 @@ class HsRedisFacade implements HsRedisFacadeInterface
      *
      * @return ScoreData
      */
-    public function getScore(ScoreData $scoreData): ScoreData
+    public function hydrateScore(ScoreData $scoreData): ScoreData
     {
         return (new HsRedisFactory())->createHsRedis()
-            ->getScore($scoreData);
+            ->hydrateScore($scoreData);
     }
 
     /**
