@@ -6,7 +6,35 @@ services:
     volumes:
       - ./app:/srv/www
       - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+
+  redis_hubsearch:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/data
+
+#  hubsearch_postgres:
+#    image: postgres:15-alpine3.17
+#    volumes:
+#      - postgresql_data:/var/lib/postgresql/data/
+#    environment:
+#      - POSTGRES_USER=hubsearch_db_user
+#      - POSTGRES_DB=hubsearch_db_name
+#      - POSTGRES_PASSWORD=hubsearch_db_password
+#    ports:
+#      - 5432:5432
+
   php_hubsearch:
     build: docker/php
+    depends_on:
+      - redis_hubsearch
     volumes:
       - ./app:/srv/www
+
+
+volumes:
+  # postgresql_data:
+  redis_data:
+    driver: local
