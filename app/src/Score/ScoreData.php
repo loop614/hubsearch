@@ -18,6 +18,10 @@ class ScoreData
      * @var string
      */
     private string $term;
+    /**
+     * @var string
+     */
+    private string $message = '';
 
     /**
      * @param string $site
@@ -29,6 +33,22 @@ class ScoreData
         $this->site = $site;
         $this->term = $term;
         $this->score = $score;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage(): string
+    {
+        return $this->message;
+    }
+
+    /**
+     * @param string $message
+     */
+    public function setMessage(string $message): void
+    {
+        $this->message = $message;
     }
 
     /**

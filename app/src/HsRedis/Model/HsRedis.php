@@ -48,7 +48,12 @@ class HsRedis implements HsRedisInterface
     public function setScore(ScoreData $scoreData): void
     {
         $key = $this->generateKey($scoreData);
-        $this->predisClient->set($key, $scoreData->getScore());
+        $score = $scoreData->getScore();
+        if ($score === 0) {
+            $score = '0';
+        }
+
+        $this->predisClient->set($key, $score);
         $this->predisClient->expire($key, HsRedisConfig::KEY_TTL);
     }
 

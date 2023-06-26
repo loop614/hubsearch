@@ -2,7 +2,7 @@
 
 namespace App\HsClient;
 
-use App\HsClient\Exception\AdapterNotFoundException;
+use App\HsClient\Adapter\Exception\AdapterNotFoundException;
 use App\Score\ScoreData;
 
 class HsClientFacade implements HsClientFacadeInterface

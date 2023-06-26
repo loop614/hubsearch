@@ -2,6 +2,7 @@
 
 namespace App\Score\Model;
 
+use App\HsClient\Adapter\Exception\HsClientAdapterException;
 use App\HsClient\HsClientFacadeInterface;
 use App\HsRedis\HsRedisFacadeInterface;
 use App\Score\ScoreConfig;
@@ -37,12 +38,20 @@ class Score implements ScoreInterface
     public function hydrateScore(ScoreData $scoreData): ScoreData
     {
         $scoreData = $this->hsRedisFacade->hydrateScore($scoreData);
-        if (!$scoreData->getScore()) {
-            $texts = $this->hsClientFacade->getTexts($scoreData);
-            $score = $this->calculateScore($texts);
-            $scoreData->setScore($score);
-            $this->hsRedisFacade->setScore($scoreData);
+        if ($scoreData->getScore() !== NULL) {
+            $scoreData->setMessage('Found this in the basement');
+            return $scoreData;
         }
+
+        try {
+            $texts = $this->hsClientFacade->getTexts($scoreData);
+        } catch (HsClientAdapterException $e) {
+            $scoreData->setMessage('Not a good day for ' . $scoreData->getSite() . '. ' . $e->getMessage());
+            return $scoreData;
+        }
+
+        $scoreData = $this->calculateScore($scoreData, $texts);
+        $this->hsRedisFacade->setScore($scoreData);
 
         return $scoreData;
     }
@@ -50,9 +59,9 @@ class Score implements ScoreInterface
     /**
      * @param string[] $texts
      *
-     * @return float
+     * @return ScoreData
      */
-    private function calculateScore(array $texts): float
+    private function calculateScore(ScoreData $scoreData, array $texts): ScoreData
     {
         $countPositive = 0;
         $countNegative = 0;
@@ -65,8 +74,15 @@ class Score implements ScoreInterface
                 $countNegative += substr_count($text, $negative);
             }
         }
-        $dt = 10 / ($countPositive + $countNegative);
+        $total = $countPositive + $countNegative;
+        if ($total > 0) {
+            $scoreData->setScore($countPositive * (10 / $total));
+            $scoreData->setMessage('Sounds good');
+            return $scoreData;
+        }
 
-        return $countPositive * $dt;
+        $scoreData->setScore(0);
+        $scoreData->setMessage('Could not say');
+        return $scoreData;
     }
 }

@@ -17,9 +17,10 @@ interface SiteAdapterInterface
     public function authenticate(): string;
 
     /**
+     * @param ScoreData $scoreData
      * @param string $token
      *
      * @return array
      */
-    public function fetchTexts(string $token): array;
+    public function fetchTexts(ScoreData $scoreData, string $token): array;
 }

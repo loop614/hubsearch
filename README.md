@@ -9,7 +9,7 @@
 
 ## Quick start
 - make init
-- open localhost:54321/score on your favourite browser
+- open localhost:12345/score on your favourite browser
 
 ## Run tests
 - make test_init

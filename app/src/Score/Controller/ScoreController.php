@@ -35,6 +35,7 @@ class ScoreController extends AbstractController
             'data' => [
                 'term' => $scoreDataResponse->getTerm(),
                 'score' => $scoreDataResponse->getScore(),
+                'message' => $scoreDataResponse->getMessage(),
                 'site' => $scoreDataResponse->getSite(),
             ]
         ]);

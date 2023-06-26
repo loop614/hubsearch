@@ -2,8 +2,8 @@
 
 namespace App\HsClient\Model;
 
+use App\HsClient\Adapter\Exception\AdapterNotFoundException;
 use App\HsClient\Adapter\SiteAdapterInterface;
-use App\HsClient\Exception\AdapterNotFoundException;
 use App\Score\ScoreData;
 
 class HsClient implements HsClientInterface
@@ -30,7 +30,7 @@ class HsClient implements HsClientInterface
         foreach ($this->adapters as $adapter) {
             if ($adapter->isApplicable($scoreData)) {
                 $token = $adapter->authenticate();
-                return $adapter->fetchTexts($token);
+                return $adapter->fetchTexts($scoreData, $token);
             }
         }
 
