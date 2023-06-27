@@ -2,38 +2,42 @@
 
 namespace App\HsClient\Model;
 
-use App\HsClient\Adapter\Exception\AdapterNotFoundException;
-use App\HsClient\Adapter\SiteAdapterInterface;
-use App\Score\ScoreData;
+use App\HsClient\Carry\HsClientResponseData;
+use App\HsClient\Model\Strategy\Exception\StrategyNotFoundException;
+use App\HsClient\Model\Strategy\SiteStrategyInterface;
+use App\Score\Carry\ScoreData;
 
 class HsClient implements HsClientInterface
 {
-    private array $adapters;
+    /**
+     * @var array
+     */
+    private array $strategys;
 
     /**
-     * @param SiteAdapterInterface[]
+     * @param SiteStrategyInterface[] $strategys
      */
-    public function __construct(array $adapters)
+    public function __construct(array $strategys)
     {
-        $this->adapters = $adapters;
+        $this->strategys = $strategys;
     }
 
     /**
      * @param ScoreData $scoreData
      *
-     * @return array|string[]
+     * @throws StrategyNotFoundException
      *
-     * @throws AdapterNotFoundException
+     * @return HsClientResponseData
      */
-    public function getTexts(ScoreData $scoreData): array
+    public function getResponseData(ScoreData $scoreData): HsClientResponseData
     {
-        foreach ($this->adapters as $adapter) {
-            if ($adapter->isApplicable($scoreData)) {
-                $token = $adapter->authenticate();
-                return $adapter->fetchTexts($scoreData, $token);
+        foreach ($this->strategys as $strategy) {
+            if ($strategy->isApplicable($scoreData)) {
+                $token = $strategy->authenticate();
+                return $strategy->fetchData($scoreData, $token);
             }
         }
 
-        throw new AdapterNotFoundException();
+        throw new StrategyNotFoundException();
     }
 }

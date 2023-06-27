@@ -2,11 +2,11 @@
 
 namespace App\Score\Model;
 
-use App\HsClient\Adapter\Exception\HsClientAdapterException;
 use App\HsClient\HsClientFacadeInterface;
+use App\HsClient\Model\Strategy\Exception\HsClientStrategyException;
 use App\HsRedis\HsRedisFacadeInterface;
 use App\Score\ScoreConfig;
-use App\Score\ScoreData;
+use App\Score\Carry\ScoreData;
 
 class Score implements ScoreInterface
 {
@@ -21,7 +21,7 @@ class Score implements ScoreInterface
     private HsClientFacadeInterface $hsClientFacade;
 
     /**
-     * @param HsRedisFacadeInterface $hsRedisFacade
+     * @param HsRedisFacadeInterface  $hsRedisFacade
      * @param HsClientFacadeInterface $hsClientFacade
      */
     public function __construct(HsRedisFacadeInterface $hsRedisFacade, HsClientFacadeInterface $hsClientFacade)
@@ -38,19 +38,19 @@ class Score implements ScoreInterface
     public function hydrateScore(ScoreData $scoreData): ScoreData
     {
         $scoreData = $this->hsRedisFacade->hydrateScore($scoreData);
-        if ($scoreData->getScore() !== NULL) {
+        if ($scoreData->getScore() !== null) {
             $scoreData->setMessage('Found this in the basement');
             return $scoreData;
         }
 
         try {
-            $texts = $this->hsClientFacade->getTexts($scoreData);
-        } catch (HsClientAdapterException $e) {
+            $clientResponse = $this->hsClientFacade->getResponseData($scoreData);
+        } catch (HsClientStrategyException $e) {
             $scoreData->setMessage('Not a good day for ' . $scoreData->getSite() . '. ' . $e->getMessage());
             return $scoreData;
         }
 
-        $scoreData = $this->calculateScore($scoreData, $texts);
+        $scoreData = $this->calculateScore($scoreData, $clientResponse->getTexts());
         $this->hsRedisFacade->setScore($scoreData);
 
         return $scoreData;
@@ -66,6 +66,10 @@ class Score implements ScoreInterface
         $countPositive = 0;
         $countNegative = 0;
         foreach ($texts as $text) {
+            if (!is_string($text)) {
+                continue;
+            }
+
             foreach (ScoreConfig::POSITIVE_WORDS as $positive) {
                 $countPositive += substr_count($text, $positive);
             }
@@ -74,6 +78,7 @@ class Score implements ScoreInterface
                 $countNegative += substr_count($text, $negative);
             }
         }
+
         $total = $countPositive + $countNegative;
         if ($total > 0) {
             $scoreData->setScore($countPositive * (10 / $total));

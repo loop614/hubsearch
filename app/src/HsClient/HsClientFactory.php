@@ -2,11 +2,11 @@
 
 namespace App\HsClient;
 
-use App\HsClient\Adapter\GithubAdapter;
-use App\HsClient\Adapter\SiteAdapterInterface;
 use App\HsClient\Model\HsClient;
 use App\HsClient\Model\HsClientInterface;
-use \GuzzleHttp\Client as GuzzleHttpClient;
+use App\HsClient\Model\Strategy\GithubStrategy;
+use App\HsClient\Model\Strategy\SiteStrategyInterface;
+use GuzzleHttp\Client as GuzzleHttpClient;
 
 class HsClientFactory
 {
@@ -15,25 +15,25 @@ class HsClientFactory
      */
     public function createHsClient(): HsClientInterface
     {
-        return new HsClient($this->createHsClientAdapters());
+        return new HsClient($this->createHsClientStrategys());
     }
 
     /**
-     * @return SiteAdapterInterface[]
+     * @return SiteStrategyInterface[]
      */
-    private function createHsClientAdapters(): array
+    private function createHsClientStrategys(): array
     {
         return [
-            $this->createGithubAdapter(),
+            $this->createGithubStrategy(),
         ];
     }
 
     /**
-     * @return SiteAdapterInterface
+     * @return SiteStrategyInterface
      */
-    private function createGithubAdapter(): SiteAdapterInterface
+    private function createGithubStrategy(): SiteStrategyInterface
     {
-        return new GithubAdapter($this->createDazzleClient());
+        return new GithubStrategy($this->createDazzleClient());
     }
 
     /**

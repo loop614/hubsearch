@@ -1,10 +1,10 @@
 <?php declare(strict_types = 1);
 
-namespace App\HsClient\Adapter;
+namespace App\HsClient\Model\Strategy;
 
 use GuzzleHttp\Client as GuzzleClient;
 
-abstract class SiteAdapter implements SiteAdapterInterface
+abstract class SiteStrategy implements SiteStrategyInterface
 {
     protected static $baererToken = '';
 

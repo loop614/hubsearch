@@ -2,14 +2,15 @@
 
 namespace App\HsClient;
 
-use App\Score\ScoreData;
+use App\HsClient\Carry\HsClientResponseData;
+use App\Score\Carry\ScoreData;
 
 interface HsClientFacadeInterface
 {
     /**
      * @param ScoreData $scoreData
      *
-     * @return string[]
+     * @return HsClientResponseData
      */
-    public function getTexts(ScoreData $scoreData): array;
+    public function getResponseData(ScoreData $scoreData): HsClientResponseData;
 }

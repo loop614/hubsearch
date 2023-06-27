@@ -8,14 +8,20 @@
 - docker with compose
 
 ## Quick start
+- make sure to add .env.local to app/ containing mygithubtoken
 - make init
-- open localhost:12345/score on your favourite browser
+- make composer_install (in separate terminal)
+- open localhost:12345/score?term=somethingelse on your favourite browser
+- for later runs just use docker compose up
 
 ## Run tests
 - make test_init
 - make test
 
+## Run code quality tools
+- make phpstan
+- make sniffer
+
 ## TODOs
-- run phpcodestyle
-- run phpstan
+- fix phpcodesniffer
 - setup cli

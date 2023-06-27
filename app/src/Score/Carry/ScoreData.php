@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace App\Score;
+namespace App\Score\Carry;
 
 class ScoreData
 {
@@ -24,8 +24,8 @@ class ScoreData
     private string $message = '';
 
     /**
-     * @param string $site
-     * @param string $term
+     * @param string     $site
+     * @param string     $term
      * @param float|null $score
      */
     public function __construct(string $site, string $term, ?float $score = null)

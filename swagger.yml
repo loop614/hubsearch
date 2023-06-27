@@ -1,0 +1,24 @@
+openapi: 3.0.1
+info:
+  title: defaultTitle
+  description: defaultDescription
+  version: '0.1'
+servers:
+  - url: http://localhost:12345
+paths:
+  /score:
+    get:
+      description: Auto generated using Swagger Inspector
+      parameters:
+        - name: term
+          in: query
+          schema:
+            type: string
+          example: somethingelse
+      responses:
+        default:
+          description: Auto generated using Swagger Inspector
+      servers:
+        - url: http://localhost:12345
+    servers:
+      - url: http://localhost:12345

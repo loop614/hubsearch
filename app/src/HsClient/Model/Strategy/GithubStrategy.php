@@ -1,11 +1,12 @@
 <?php declare(strict_types = 1);
 
-namespace App\HsClient\Adapter;
+namespace App\HsClient\Model\Strategy;
 
-use App\HsClient\Adapter\Exception\GithubResponseException;
-use App\Score\ScoreData;
+use App\HsClient\Carry\HsClientResponseData;
+use App\HsClient\Model\Strategy\Exception\GithubResponseException;
+use App\Score\Carry\ScoreData;
 
-class GithubAdapter extends SiteAdapter
+class GithubStrategy extends SiteStrategy
 {
     /**
      * @param ScoreData $scoreData
@@ -25,15 +26,6 @@ class GithubAdapter extends SiteAdapter
     public function authenticate(): string
     {
         return getenv('mygithubtoken');
-//        if (self::$baererToken != '') {
-//            return self::$baererToken;
-//        }
-//
-//        $response = $this->guzzleClient->get(
-//            getenv('github_auth_path')
-//        );
-//
-//        return self::$baererToken;
     }
 
     /**
@@ -43,10 +35,11 @@ class GithubAdapter extends SiteAdapter
      * @throws GithubResponseException
      * @throws \GuzzleHttp\Exception\GuzzleException
      *
-     * @return array
+     * @return HsClientResponseData
      */
-    public function fetchTexts(ScoreData $scoreData, string $token): array
+    public function fetchData(ScoreData $scoreData, string $token): HsClientResponseData
     {
+        $response = new HsClientResponseData();
         $issues = $this->fetchIssues($scoreData, $token);
         $valid = $this->validateResponse($issues);
 
@@ -54,7 +47,7 @@ class GithubAdapter extends SiteAdapter
             throw new GithubResponseException();
         }
 
-        return $this->takeTexts($issues);
+        return $this->takeTexts($response, $issues);
     }
 
     /**
@@ -69,8 +62,8 @@ class GithubAdapter extends SiteAdapter
     {
         $url = 'https://api.github.com/search/issues?q=' . $scoreData->getTerm();
         $headers = [
-            'Content-type'  => 'application/json; charset=utf-8',
-            'Accept'        => 'application/json',
+            'Content-type' => 'application/json; charset=utf-8',
+            'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . $token,
         ];
 
@@ -90,22 +83,24 @@ class GithubAdapter extends SiteAdapter
      */
     private function validateResponse(array $issues): bool
     {
-        return isset($issues['items']) && count($issues['items']) > 1;
+        return isset($issues['items']);
     }
 
     /**
+     * @param HsClientResponseData $response
      * @param array $issues
      *
-     * @return array
+     * @return HsClientResponseData
      */
-    private function takeTexts(array $issues): array
+    private function takeTexts(HsClientResponseData $response, array $issues): HsClientResponseData
     {
         $texts = [];
         foreach ($issues['items'] as $item) {
             $texts[] = $item['title'];
             $texts[] = $item['body'];
         }
+        $response->setTexts($texts);
 
-        return $texts;
+        return $response;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\HsRedis;
 
-use App\Score\ScoreData;
+use App\Score\Carry\ScoreData;
 
 interface HsRedisFacadeInterface
 {

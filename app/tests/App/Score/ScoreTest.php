@@ -2,8 +2,10 @@
 
 namespace App\Score;
 
+use App\HsClient\Carry\HsClientResponseData;
 use App\HsClient\HsClientFacadeInterface;
 use App\HsRedis\HsRedisFacadeInterface;
+use App\Score\Carry\ScoreData;
 use App\Score\Model\Score;
 use App\Score\Model\ScoreInterface;
 use Codeception\Test\Unit;
@@ -41,7 +43,9 @@ class UserTest extends Unit
     public function testScoreCalculator()
     {
         $emptyRedisScoreData = new ScoreData('Github', 'php');
+        $clientResponse = new HsClientResponseData();
         $texts = ['everybody sucks at something', 'everybody rocks at something'];
+        $clientResponse->setTexts($texts);
         $expectedScore = 5;
 
         $this->mockHsRedisFacade
@@ -51,8 +55,8 @@ class UserTest extends Unit
 
         $this->mockHsClientFacade
             ->expects($this->once())
-            ->method('getTexts')
-            ->willReturn($texts);
+            ->method('getResponseData')
+            ->willReturn($clientResponse);
 
         $inputScoreData = new ScoreData('Github', 'php');
         $outputScoreData = $this->sut->hydrateScore($inputScoreData);

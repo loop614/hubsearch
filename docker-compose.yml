@@ -19,21 +19,12 @@ services:
     volumes:
       - redis_data:/data
 
-#  hubsearch_postgres:
-#    image: postgres:15-alpine3.17
-#    volumes:
-#      - postgresql_data:/var/lib/postgresql/data/
-#    environment:
-#      - POSTGRES_USER=hubsearch_db_user
-#      - POSTGRES_DB=hubsearch_db_name
-#      - POSTGRES_PASSWORD=hubsearch_db_password
-#    ports:
-#      - 5432:5432
-
   php_hubsearch:
     build: docker/php
     depends_on:
       - redis_hubsearch
+    env_file:
+      - app/.env.local
     volumes:
       - ./app:/srv/www
 #      - ./docker/php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
@@ -41,6 +32,5 @@ services:
 
 
 volumes:
-  # postgresql_data:
   redis_data:
     driver: local

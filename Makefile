@@ -6,24 +6,37 @@ build:
 	docker compose build --no-cache
 	docker compose up --remove-orphans
 
+install:
+	$(HUBSEARCHCOMPOSER) create-project symfony/skeleton:"6.2.*" .
+	$(HUBSEARCHCOMPOSER) require predis/predis
+	$(HUBSEARCHCOMPOSER) require guzzlehttp/guzzle
+	$(HUBSEARCHCOMPOSER) require --dev codeception/codeception
+	$(HUBSEARCHCOMPOSER) require --dev squizlabs/php_codesniffer:"3.*"
+	$(HUBSEARCHCOMPOSER) require --dev phpstan/phpstan
+
 init:
 	docker compose build --no-cache
 	docker compose up --remove-orphans
-	$(HUBSEARCHCOMPOSER) create-project symfony/skeleton:"6.2.*" .
 	$(HUBSEARCH) chmod a+rwx -R .
-	$(HUBSEARCHCOMPOSER) require predis/predis
-	$(HUBSEARCHCOMPOSER) require guzzlehttp/guzzle
-	$(HUBSEARCHCOMPOSER) require codeception/codeception --dev
+
+composer_install:
 	$(HUBSEARCHCOMPOSER) install
 
 temp:
-	$(HUBSEARCH) php vendor/bin/codecept generate:test Unit Score
+	$(HUBSEARCH) vendor/bin/phpstan analyse src tests
 
 php:
 	$(HUBSEARCH) $(arg)
 
 composer:
 	$(HUBSEARCHCOMPOSER) $(arg)
+
+sniffer:
+	$(HUBSEARCH) vendor/bin/phpcs -p --extensions=php src/
+	$(HUBSEARCH) vendor/bin/phpcs -p --extensions=php tests/App/
+
+phpstan:
+	$(HUBSEARCH) vendor/bin/phpstan analyse src tests
 
 console:
 	$(HUBSEARCH) bin/console $(arg)

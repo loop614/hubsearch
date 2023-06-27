@@ -3,7 +3,7 @@
 namespace App\Score\Controller;
 
 use App\HsRedis\ScoreFactory;
-use App\Score\ScoreData;
+use App\Score\Carry\ScoreData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,13 +31,15 @@ class ScoreController extends AbstractController
             ->createScore()
             ->hydrateScore($scoreDataRequest);
 
-        return new JsonResponse([
+        return new JsonResponse(
+            [
             'data' => [
                 'term' => $scoreDataResponse->getTerm(),
                 'score' => $scoreDataResponse->getScore(),
                 'message' => $scoreDataResponse->getMessage(),
                 'site' => $scoreDataResponse->getSite(),
             ]
-        ]);
+            ]
+        );
     }
 }

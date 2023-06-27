@@ -21,6 +21,14 @@ class HsRedisFactory
      */
     public function createPredisClient(): PredisClient
     {
-        return new PredisClient(HsRedisConfig::SCHEME . '://' . HsRedisConfig::HOST . ':' . HsRedisConfig::PORT);
+        return new PredisClient($this->getPredisConnectionString());
+    }
+
+    /**
+     * @return string
+     */
+    public function getPredisConnectionString(): string
+    {
+        return HsRedisConfig::SCHEME . '://' . HsRedisConfig::HOST . ':' . HsRedisConfig::PORT;
     }
 }
