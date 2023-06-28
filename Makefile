@@ -14,6 +14,9 @@ install:
 	$(HUBSEARCHCOMPOSER) require --dev squizlabs/php_codesniffer:"3.*"
 	$(HUBSEARCHCOMPOSER) require --dev phpstan/phpstan
 
+open:
+	$(HUBSEARCH) /bin/bash
+
 init:
 	docker compose build --no-cache
 	docker compose up --remove-orphans

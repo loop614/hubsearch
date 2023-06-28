@@ -8,6 +8,7 @@ use Predis\Client as PredisClient;
 
 class HsRedisFactory
 {
+    private static ?PredisClient $predisClient = NULL;
     /**
      * @return HsRedisInterface
      */
@@ -21,7 +22,12 @@ class HsRedisFactory
      */
     public function createPredisClient(): PredisClient
     {
-        return new PredisClient($this->getPredisConnectionString());
+        if (self::$predisClient !== null) {
+            return self::$predisClient;
+        }
+        self::$predisClient = new PredisClient($this->getPredisConnectionString());
+
+        return self::$predisClient;
     }
 
     /**
