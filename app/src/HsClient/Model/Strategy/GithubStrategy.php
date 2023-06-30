@@ -25,7 +25,8 @@ class GithubStrategy extends SiteStrategy
      */
     public function authenticate(): string
     {
-        return getenv('mygithubtoken');
+        return 'token';
+        // return getenv('mygithubtoken');
     }
 
     /**
@@ -67,13 +68,38 @@ class GithubStrategy extends SiteStrategy
             'Authorization' => 'Bearer ' . $token,
         ];
 
-        $response = $this->guzzleClient->request(
-            'GET',
-            $url,
-            ['headers' => $headers]
-        );
+//        $response = $this->guzzleClient->request(
+//            'GET',
+//            $url,
+//            ['headers' => $headers]
+//        );
 
-        return json_decode($response->getBody()->getContents(), true);
+        // return json_decode($response->getBody()->getContents(), true);
+        $result = [];
+        $result['items'] = [];
+
+        for($i = 0; $i < 10; $i++) {
+            $text = [];
+            $rng = rand();
+            if ($rng % 3 === 0) {
+                $text['body'] = 'this thing sucks';
+                $text['title'] = 'this thing sucks';
+                $result['items'][] = $text;
+                continue;
+            }
+            if ($rng % 3 === 1) {
+                $text['body'] = 'this thing rocks';
+                $text['title'] = 'this thing rocks';
+                $result['items'][] = $text;
+                continue;
+            }
+            $text['body'] = 'lorem ipsum';
+            $text['title'] = 'ipsum lorem';
+            $result['items'][] = $text;
+        }
+
+
+        return $result;
     }
 
     /**
@@ -96,8 +122,8 @@ class GithubStrategy extends SiteStrategy
     {
         $texts = [];
         foreach ($issues['items'] as $item) {
-            $texts[] = $item['title'];
-            $texts[] = $item['body'];
+            $texts[] = $item['title'] ?? '';
+            $texts[] = $item['body'] ?? '';
         }
         $response->setTexts($texts);
 
