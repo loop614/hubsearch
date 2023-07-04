@@ -11,18 +11,18 @@ use App\Score\Carry\ScoreData;
 class Score implements ScoreInterface
 {
     /**
-     * @var HsRedisFacadeInterface
+     * @var \App\HsRedis\HsRedisFacadeInterface
      */
     private HsRedisFacadeInterface $hsRedisFacade;
 
     /**
-     * @var HsClientFacadeInterface
+     * @var \App\HsClient\HsClientFacadeInterface
      */
     private HsClientFacadeInterface $hsClientFacade;
 
     /**
-     * @param HsRedisFacadeInterface  $hsRedisFacade
-     * @param HsClientFacadeInterface $hsClientFacade
+     * @param \App\HsRedis\HsRedisFacadeInterface $hsRedisFacade
+     * @param \App\HsClient\HsClientFacadeInterface $hsClientFacade
      */
     public function __construct(HsRedisFacadeInterface $hsRedisFacade, HsClientFacadeInterface $hsClientFacade)
     {
@@ -31,9 +31,9 @@ class Score implements ScoreInterface
     }
 
     /**
-     * @param ScoreData $scoreData
+     * @param \App\Score\Carry\ScoreData $scoreData
      *
-     * @return ScoreData
+     * @return \App\Score\Carry\ScoreData
      */
     public function hydrateScore(ScoreData $scoreData): ScoreData
     {
@@ -57,9 +57,10 @@ class Score implements ScoreInterface
     }
 
     /**
-     * @param string[] $texts
+     * @param \App\Score\Carry\ScoreData $scoreData
+     * @param array $texts
      *
-     * @return ScoreData
+     * @return \App\Score\Carry\ScoreData
      */
     private function calculateScore(ScoreData $scoreData, array $texts): ScoreData
     {

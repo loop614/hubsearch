@@ -9,8 +9,9 @@ use Predis\Client as PredisClient;
 class HsRedisFactory
 {
     private static ?PredisClient $predisClient = NULL;
+
     /**
-     * @return HsRedisInterface
+     * @return \App\HsRedis\Model\HsRedisInterface
      */
     public function createHsRedis(): HsRedisInterface
     {
@@ -18,7 +19,7 @@ class HsRedisFactory
     }
 
     /**
-     * @return PredisClient
+     * @return \Predis\Client
      */
     public function createPredisClient(): PredisClient
     {

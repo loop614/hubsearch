@@ -10,14 +10,14 @@ use App\Score\Carry\ScoreData;
 class HsRedis implements HsRedisInterface
 {
     /**
-     * @var PredisClient
+     * @var \Predis\Client
      */
     private PredisClient $predisClient;
 
     const REDIS_PREFIX = 'kv';
 
     /**
-     * @param PredisClient $redisClient
+     * @param \Predis\Client $redisClient
      */
     public function __construct(PredisClient $redisClient)
     {
@@ -25,9 +25,11 @@ class HsRedis implements HsRedisInterface
     }
 
     /**
-     * @param ScoreData $scoreData
+     * @param \App\Score\Carry\ScoreData $scoreData
      *
-     * @return ScoreData
+     * @throws \App\HsRedis\Exception\SiteNotSupportedException
+     *
+     * @return \App\Score\Carry\ScoreData
      */
     public function hydrateScore(ScoreData $scoreData): ScoreData
     {
@@ -44,7 +46,7 @@ class HsRedis implements HsRedisInterface
     }
 
     /**
-     * @param ScoreData $scoreData
+     * @param \App\Score\Carry\ScoreData $scoreData
      *
      * @return void
      */
@@ -57,7 +59,7 @@ class HsRedis implements HsRedisInterface
     }
 
     /**
-     * @param ScoreData $scoreData
+     * @param \App\Score\Carry\ScoreData $scoreData
      *
      * @return string
      */

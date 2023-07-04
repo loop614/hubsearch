@@ -14,20 +14,23 @@ use PHPUnit\Framework\MockObject\MockObject;
 class UserTest extends Unit
 {
     /**
-     * @var HsRedisFacadeInterface|MockObject
+     * @var \App\HsRedis\HsRedisFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private HsRedisFacadeInterface|MockObject $mockHsRedisFacade;
 
     /**
-     * @var HsClientFacadeInterface|MockObject
+     * @var \App\HsClient\HsClientFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private HsClientFacadeInterface|MockObject $mockHsClientFacade;
 
     /**
-     * @var ScoreInterface
+     * @var \App\Score\Model\ScoreInterface
      */
     private ScoreInterface $sut;
 
+    /**
+     * @return void
+     */
     protected function _before()
     {
         parent::_before();
@@ -40,6 +43,9 @@ class UserTest extends Unit
         );
     }
 
+    /**
+     * @return void
+     */
     public function testScoreCalculator()
     {
         $emptyRedisScoreData = new ScoreData('Github', 'php');
@@ -64,7 +70,7 @@ class UserTest extends Unit
     }
 
     /**
-     * @return HsRedisFacadeInterface|MockObject
+     * @return \App\HsRedis\HsRedisFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private function getMochHsRedisFacade(): HsRedisFacadeInterface|MockObject
     {
@@ -72,7 +78,7 @@ class UserTest extends Unit
     }
 
     /**
-     * @return HsClientFacadeInterface|MockObject
+     * @return \App\HsClient\HsClientFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     private function getMockHsClientFacade(): HsClientFacadeInterface|MockObject
     {

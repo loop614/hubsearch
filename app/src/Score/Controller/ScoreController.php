@@ -14,9 +14,9 @@ class ScoreController extends AbstractController
     const MAX_TERM_SIZE = 16;
 
     /**
-     * @param Request $request
+     * @param \Symfony\Component\HttpFoundation\Request $request
      *
-     * @return JsonResponse
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function index(Request $request): JsonResponse
     {
@@ -31,15 +31,13 @@ class ScoreController extends AbstractController
             ->createScore()
             ->hydrateScore($scoreDataRequest);
 
-        return new JsonResponse(
-            [
+        return new JsonResponse([
             'data' => [
                 'term' => $scoreDataResponse->getTerm(),
                 'score' => $scoreDataResponse->getScore(),
                 'message' => $scoreDataResponse->getMessage(),
                 'site' => $scoreDataResponse->getSite(),
             ]
-            ]
-        );
+        ]);
     }
 }

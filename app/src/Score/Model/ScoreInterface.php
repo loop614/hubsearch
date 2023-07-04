@@ -7,9 +7,9 @@ use App\Score\Carry\ScoreData;
 interface ScoreInterface
 {
     /**
-     * @param ScoreData $scoreData
+     * @param \App\Score\Carry\ScoreData $scoreData
      *
-     * @return ScoreData $scoreData
+     * @return \App\Score\Carry\ScoreData
      */
     public function hydrateScore(ScoreData $scoreData): ScoreData;
 }

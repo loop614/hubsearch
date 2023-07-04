@@ -7,14 +7,14 @@ use App\Score\Carry\ScoreData;
 interface HsRedisInterface
 {
     /**
-     * @param ScoreData $scoreData
+     * @param \App\Score\Carry\ScoreData $scoreData
      *
-     * @return ScoreData
+     * @return \App\Score\Carry\ScoreData
      */
     public function hydrateScore(ScoreData $scoreData): ScoreData;
 
     /**
-     * @param ScoreData $scoreData
+     * @param \App\Score\Carry\ScoreData $scoreData
      *
      * @return void
      */

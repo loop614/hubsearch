@@ -10,7 +10,7 @@ use App\Score\Model\ScoreInterface;
 class ScoreFactory
 {
     /**
-     * @return ScoreInterface
+     * @return \App\Score\Model\ScoreInterface
      */
     public function createScore(): ScoreInterface
     {
@@ -18,7 +18,7 @@ class ScoreFactory
     }
 
     /**
-     * @return HsRedisFacadeInterface
+     * @return \App\HsRedis\HsRedisFacadeInterface
      */
     private function createHsRedisFacade(): HsRedisFacadeInterface
     {
@@ -26,7 +26,7 @@ class ScoreFactory
     }
 
     /**
-     * @return HsClientFacadeInterface
+     * @return \App\HsClient\HsClientFacadeInterface
      */
     private function createHsClientFacade(): HsClientFacadeInterface
     {
