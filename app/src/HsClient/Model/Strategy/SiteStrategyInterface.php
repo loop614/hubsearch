@@ -18,10 +18,10 @@ interface SiteStrategyInterface
     public function authenticate(): string;
 
     /**
-     * @param ScoreTransfer $scoreData
-     * @param string        $token
+     * @param \App\Score\Transfer\ScoreTransfer $scoreData
+     * @param string                            $token
      *
-     * @return HsClientResponseTransfer
+     * @return \App\HsClient\Transfer\HsClientResponseTransfer
      */
     public function fetchData(ScoreTransfer $scoreData, string $token): HsClientResponseTransfer;
 }
