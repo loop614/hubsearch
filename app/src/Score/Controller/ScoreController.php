@@ -2,14 +2,14 @@
 
 namespace App\Score\Controller;
 
+use App\Core\Controller\CoreController;
 use App\HsRedis\ScoreFactory;
-use App\Score\Carry\ScoreData;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Score\Transfer\ScoreTransfer;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-class ScoreController extends AbstractController
+class ScoreController extends CoreController
 {
     const MAX_TERM_SIZE = 16;
 
@@ -26,18 +26,12 @@ class ScoreController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $scoreDataRequest = new ScoreData('github', (string) $term);
+        $scoreDataRequest = new ScoreTransfer('github', (string) $term);
         $scoreDataResponse = (new ScoreFactory())
             ->createScore()
             ->hydrateScore($scoreDataRequest);
-
-        return new JsonResponse([
-            'data' => [
-                'term' => $scoreDataResponse->getTerm(),
-                'score' => $scoreDataResponse->getScore(),
-                'message' => $scoreDataResponse->getMessage(),
-                'site' => $scoreDataResponse->getSite(),
-            ]
-        ]);
+        return new JsonResponse(
+            ['data' => $scoreDataResponse->toArray()]
+        );
     }
 }

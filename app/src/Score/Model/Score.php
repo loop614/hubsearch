@@ -6,7 +6,7 @@ use App\HsClient\HsClientFacadeInterface;
 use App\HsClient\Model\Strategy\Exception\HsClientStrategyException;
 use App\HsRedis\HsRedisFacadeInterface;
 use App\Score\ScoreConfig;
-use App\Score\Carry\ScoreData;
+use App\Score\Transfer\ScoreTransfer;
 
 class Score implements ScoreInterface
 {
@@ -21,7 +21,7 @@ class Score implements ScoreInterface
     private HsClientFacadeInterface $hsClientFacade;
 
     /**
-     * @param \App\HsRedis\HsRedisFacadeInterface $hsRedisFacade
+     * @param \App\HsRedis\HsRedisFacadeInterface   $hsRedisFacade
      * @param \App\HsClient\HsClientFacadeInterface $hsClientFacade
      */
     public function __construct(HsRedisFacadeInterface $hsRedisFacade, HsClientFacadeInterface $hsClientFacade)
@@ -31,11 +31,11 @@ class Score implements ScoreInterface
     }
 
     /**
-     * @param \App\Score\Carry\ScoreData $scoreData
+     * @param \App\Score\Transfer\ScoreTransfer $scoreData
      *
-     * @return \App\Score\Carry\ScoreData
+     * @return \App\Score\Transfer\ScoreTransfer
      */
-    public function hydrateScore(ScoreData $scoreData): ScoreData
+    public function hydrateScore(ScoreTransfer $scoreData): ScoreTransfer
     {
         $scoreData = $this->hsRedisFacade->hydrateScore($scoreData);
         if ($scoreData->getScore() !== null) {
@@ -57,12 +57,12 @@ class Score implements ScoreInterface
     }
 
     /**
-     * @param \App\Score\Carry\ScoreData $scoreData
-     * @param array $texts
+     * @param \App\Score\Transfer\ScoreTransfer $scoreData
+     * @param array                             $texts
      *
-     * @return \App\Score\Carry\ScoreData
+     * @return \App\Score\Transfer\ScoreTransfer
      */
-    private function calculateScore(ScoreData $scoreData, array $texts): ScoreData
+    private function calculateScore(ScoreTransfer $scoreData, array $texts): ScoreTransfer
     {
         $countPositive = 0;
         $countNegative = 0;

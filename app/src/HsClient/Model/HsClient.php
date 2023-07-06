@@ -2,10 +2,10 @@
 
 namespace App\HsClient\Model;
 
-use App\HsClient\Carry\HsClientResponseData;
+use App\HsClient\Transfer\HsClientResponseTransfer;
 use App\HsClient\Model\Strategy\Exception\StrategyNotFoundException;
 use App\HsClient\Model\Strategy\SiteStrategyInterface;
-use App\Score\Carry\ScoreData;
+use App\Score\Transfer\ScoreTransfer;
 
 class HsClient implements HsClientInterface
 {
@@ -23,13 +23,13 @@ class HsClient implements HsClientInterface
     }
 
     /**
-     * @param ScoreData $scoreData
+     * @param ScoreTransfer $scoreData
      *
      * @throws StrategyNotFoundException
      *
-     * @return HsClientResponseData
+     * @return HsClientResponseTransfer
      */
-    public function getResponseData(ScoreData $scoreData): HsClientResponseData
+    public function getResponseData(ScoreTransfer $scoreData): HsClientResponseTransfer
     {
         foreach ($this->strategys as $strategy) {
             if ($strategy->isApplicable($scoreData)) {

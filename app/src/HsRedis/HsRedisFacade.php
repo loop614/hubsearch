@@ -2,30 +2,34 @@
 
 namespace App\HsRedis;
 
-use App\Score\Carry\ScoreData;
+use App\Core\CoreFacade;
+use App\Score\Transfer\ScoreTransfer;
 
-class HsRedisFacade implements HsRedisFacadeInterface
+/**
+ * @method \App\HsRedis\HsRedisFactory getFactory()
+ */
+final class HsRedisFacade extends CoreFacade implements HsRedisFacadeInterface
 {
     /**
-     * @param \App\Score\Carry\ScoreData $scoreData
+     * @param \App\Score\Transfer\ScoreTransfer $scoreData
      *
-     * @return \App\Score\Carry\ScoreData
+     * @return \App\Score\Transfer\ScoreTransfer
      */
-    public function hydrateScore(ScoreData $scoreData): ScoreData
+    public function hydrateScore(ScoreTransfer $scoreData): ScoreTransfer
     {
-        return (new HsRedisFactory())
+        return $this->getFactory()
             ->createHsRedis()
             ->hydrateScore($scoreData);
     }
 
     /**
-     * @param \App\Score\Carry\ScoreData $scoreData
+     * @param \App\Score\Transfer\ScoreTransfer $scoreData
      *
      * @return void
      */
-    public function setScore(ScoreData $scoreData): void
+    public function setScore(ScoreTransfer $scoreData): void
     {
-        (new HsRedisFactory())
+        $this->getFactory()
             ->createHsRedis()
             ->setScore($scoreData);
     }

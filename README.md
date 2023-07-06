@@ -1,26 +1,32 @@
 ## Description
-- example symfony project
+- example symfony project inspired by [Spryker kernel](https://github.com/spryker/spryker-core/tree/master/Bundles/Kernel/src/Spryker/Zed/Kernel)
 - search Github issues and display number of rocks/sucks words with 1-10 grade
 - has redis cache
+
 
 ## Requirements
 - make
 - docker with compose
 
+
 ## Quick start
-- make sure to add .env.local to app/ containing mygithubtoken
-- make init
-- make composer_install (in separate terminal)
-- open localhost:12345/score?term=somethingelse on your favourite browser
-- for later runs just use docker compose up
+```console
+$ make env
+$ make build
+$ make install # while docker compose running
+```
+- open localhost:12345/score?term=somethingelse
+
 
 ## Run tests
 - make test_init
 - make test
 
+
 ## Run code quality tools
 - make phpstan
 - make sniffer
+
 
 ## TODOs
 - fix phpcodesniffer

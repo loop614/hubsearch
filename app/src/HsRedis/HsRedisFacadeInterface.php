@@ -2,21 +2,21 @@
 
 namespace App\HsRedis;
 
-use App\Score\Carry\ScoreData;
+use App\Score\Transfer\ScoreTransfer;
 
 interface HsRedisFacadeInterface
 {
     /**
-     * @param \App\Score\Carry\ScoreData $scoreData
+     * @param \App\Score\Transfer\ScoreTransfer $scoreData
      *
-     * @return \App\Score\Carry\ScoreData
+     * @return \App\Score\Transfer\ScoreTransfer
      */
-    public function hydrateScore(ScoreData $scoreData): ScoreData;
+    public function hydrateScore(ScoreTransfer $scoreData): ScoreTransfer;
 
     /**
-     * @param \App\Score\Carry\ScoreData $scoreData
+     * @param \App\Score\Transfer\ScoreTransfer $scoreData
      *
      * @return void
      */
-    public function setScore(ScoreData $scoreData): void;
+    public function setScore(ScoreTransfer $scoreData): void;
 }

@@ -2,15 +2,15 @@
 
 namespace App\HsClient\Model;
 
-use App\HsClient\Carry\HsClientResponseData;
-use App\Score\Carry\ScoreData;
+use App\HsClient\Transfer\HsClientResponseTransfer;
+use App\Score\Transfer\ScoreTransfer;
 
 interface HsClientInterface
 {
     /**
-     * @param ScoreData $scoreData
+     * @param ScoreTransfer $scoreData
      *
-     * @return HsClientResponseData
+     * @return HsClientResponseTransfer
      */
-    public function getResponseData(ScoreData $scoreData): HsClientResponseData;
+    public function getResponseData(ScoreTransfer $scoreData): HsClientResponseTransfer;
 }

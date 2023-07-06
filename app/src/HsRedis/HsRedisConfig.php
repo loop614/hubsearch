@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
 namespace App\HsRedis;
-class HsRedisConfig
+
+final class HsRedisConfig
 {
     public const SCHEME = 'tcp';
     public const HOST = 'redis_hubsearch';

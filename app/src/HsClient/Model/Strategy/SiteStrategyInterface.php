@@ -2,15 +2,15 @@
 
 namespace App\HsClient\Model\Strategy;
 
-use App\HsClient\Carry\HsClientResponseData;
-use App\Score\Carry\ScoreData;
+use App\HsClient\Transfer\HsClientResponseTransfer;
+use App\Score\Transfer\ScoreTransfer;
 
 interface SiteStrategyInterface
 {
     /**
      * @return bool
      */
-    public function isApplicable(ScoreData $scoreData): bool;
+    public function isApplicable(ScoreTransfer $scoreData): bool;
 
     /**
      * @return string
@@ -18,10 +18,10 @@ interface SiteStrategyInterface
     public function authenticate(): string;
 
     /**
-     * @param ScoreData $scoreData
-     * @param string    $token
+     * @param ScoreTransfer $scoreData
+     * @param string        $token
      *
-     * @return HsClientResponseData
+     * @return HsClientResponseTransfer
      */
-    public function fetchData(ScoreData $scoreData, string $token): HsClientResponseData;
+    public function fetchData(ScoreTransfer $scoreData, string $token): HsClientResponseTransfer;
 }

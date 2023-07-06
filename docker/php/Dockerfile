@@ -1,4 +1,4 @@
-FROM phpdaily/php:8.1.0-dev-fpm-alpine3.13
+FROM phpdaily/php:8.2-fpm-alpine3.13
 
 RUN apk update
 

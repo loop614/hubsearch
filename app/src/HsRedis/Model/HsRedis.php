@@ -5,7 +5,7 @@ namespace App\HsRedis\Model;
 use App\HsRedis\Exception\SiteNotSupportedException;
 use App\HsRedis\HsRedisConfig;
 use Predis\Client as PredisClient;
-use App\Score\Carry\ScoreData;
+use App\Score\Transfer\ScoreTransfer;
 
 class HsRedis implements HsRedisInterface
 {
@@ -25,13 +25,13 @@ class HsRedis implements HsRedisInterface
     }
 
     /**
-     * @param \App\Score\Carry\ScoreData $scoreData
+     * @param \App\Score\Transfer\ScoreTransfer $scoreData
      *
      * @throws \App\HsRedis\Exception\SiteNotSupportedException
      *
-     * @return \App\Score\Carry\ScoreData
+     * @return \App\Score\Transfer\ScoreTransfer
      */
-    public function hydrateScore(ScoreData $scoreData): ScoreData
+    public function hydrateScore(ScoreTransfer $scoreData): ScoreTransfer
     {
         if (!isset(HsRedisConfig::KEY_PER_SITE[$scoreData->getSite()])) {
             throw new SiteNotSupportedException();
@@ -46,11 +46,11 @@ class HsRedis implements HsRedisInterface
     }
 
     /**
-     * @param \App\Score\Carry\ScoreData $scoreData
+     * @param \App\Score\Transfer\ScoreTransfer $scoreData
      *
      * @return void
      */
-    public function setScore(ScoreData $scoreData): void
+    public function setScore(ScoreTransfer $scoreData): void
     {
         $key = $this->generateKey($scoreData);
         $score = $scoreData->getScore();
@@ -59,11 +59,11 @@ class HsRedis implements HsRedisInterface
     }
 
     /**
-     * @param \App\Score\Carry\ScoreData $scoreData
+     * @param \App\Score\Transfer\ScoreTransfer $scoreData
      *
      * @return string
      */
-    private function generateKey(ScoreData $scoreData): string
+    private function generateKey(ScoreTransfer $scoreData): string
     {
         return join(
             [

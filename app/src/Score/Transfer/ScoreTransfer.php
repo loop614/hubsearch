@@ -1,8 +1,10 @@
 <?php declare(strict_types = 1);
 
-namespace App\Score\Carry;
+namespace App\Score\Transfer;
 
-class ScoreData
+use App\Core\Transfer\CoreTransfer;
+
+final class ScoreTransfer extends CoreTransfer
 {
     /**
      * @var float|null
@@ -97,5 +99,38 @@ class ScoreData
     public function setTerm(string $term): void
     {
         $this->term = $term;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $transferArray = [];
+        $class_vars = get_class_vars(self::class);
+        foreach (array_keys($class_vars) as $name) {
+            $getName = 'get' . ucfirst($name);
+            $transferArray[$name] = $this->$getName();
+        }
+
+        return $transferArray;
+    }
+
+    /**
+     * @param array $seed
+     *
+     * @return void
+     */
+    public function fromArray(array $seed): void
+    {
+        $class_vars = get_class_vars(self::class);
+        foreach (array_keys($class_vars) as $name) {
+            if (!isset($seed[$name])) {
+                continue;
+            }
+
+            $getName = 'set' . ucfirst($name);
+            $this->$getName($seed[$name]);
+        }
     }
 }

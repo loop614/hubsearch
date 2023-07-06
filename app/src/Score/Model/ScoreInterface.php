@@ -2,14 +2,14 @@
 
 namespace App\Score\Model;
 
-use App\Score\Carry\ScoreData;
+use App\Score\Transfer\ScoreTransfer;
 
 interface ScoreInterface
 {
     /**
-     * @param \App\Score\Carry\ScoreData $scoreData
+     * @param \App\Score\Transfer\ScoreTransfer $scoreData
      *
-     * @return \App\Score\Carry\ScoreData
+     * @return \App\Score\Transfer\ScoreTransfer
      */
-    public function hydrateScore(ScoreData $scoreData): ScoreData;
+    public function hydrateScore(ScoreTransfer $scoreData): ScoreTransfer;
 }

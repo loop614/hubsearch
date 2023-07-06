@@ -2,6 +2,8 @@
 
 namespace App\HsClient;
 
-class HsClientConfig
+use App\Core\CoreConfig;
+
+final class HsClientConfig extends CoreConfig
 {
 }

@@ -2,13 +2,14 @@
 
 namespace App\HsClient;
 
+use App\Core\CoreFactory;
 use App\HsClient\Model\HsClient;
 use App\HsClient\Model\HsClientInterface;
 use App\HsClient\Model\Strategy\GithubStrategy;
 use App\HsClient\Model\Strategy\SiteStrategyInterface;
 use GuzzleHttp\Client as GuzzleHttpClient;
 
-class HsClientFactory
+class HsClientFactory extends CoreFactory
 {
     /**
      * @return HsClientInterface

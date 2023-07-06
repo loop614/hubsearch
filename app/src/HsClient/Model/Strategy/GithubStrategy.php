@@ -2,18 +2,18 @@
 
 namespace App\HsClient\Model\Strategy;
 
-use App\HsClient\Carry\HsClientResponseData;
+use App\HsClient\Transfer\HsClientResponseTransfer;
 use App\HsClient\Model\Strategy\Exception\GithubResponseException;
-use App\Score\Carry\ScoreData;
+use App\Score\Transfer\ScoreTransfer;
 
-class GithubStrategy extends SiteStrategy
+final class GithubStrategy extends SiteStrategy
 {
     /**
-     * @param ScoreData $scoreData
+     * @param ScoreTransfer $scoreData
      *
      * @return bool
      */
-    public function isApplicable(ScoreData $scoreData): bool
+    public function isApplicable(ScoreTransfer $scoreData): bool
     {
         return $scoreData->getSite() === 'github';
     }
@@ -30,17 +30,17 @@ class GithubStrategy extends SiteStrategy
     }
 
     /**
-     * @param ScoreData $scoreData
-     * @param string $token
+     * @param ScoreTransfer $scoreData
+     * @param string        $token
      *
      * @throws GithubResponseException
      * @throws \GuzzleHttp\Exception\GuzzleException
      *
-     * @return HsClientResponseData
+     * @return HsClientResponseTransfer
      */
-    public function fetchData(ScoreData $scoreData, string $token): HsClientResponseData
+    public function fetchData(ScoreTransfer $scoreData, string $token): HsClientResponseTransfer
     {
-        $response = new HsClientResponseData();
+        $response = new HsClientResponseTransfer();
         $issues = $this->fetchIssues($scoreData, $token);
         $valid = $this->validateResponse($issues);
 
@@ -52,14 +52,14 @@ class GithubStrategy extends SiteStrategy
     }
 
     /**
-     * @param ScoreData $scoreData
-     * @param string $token
+     * @param ScoreTransfer $scoreData
+     * @param string        $token
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
      *
      * @return array
      */
-    private function fetchIssues(ScoreData $scoreData, string $token): array
+    private function fetchIssues(ScoreTransfer $scoreData, string $token): array
     {
         $url = 'https://api.github.com/search/issues?q=' . $scoreData->getTerm();
         $headers = [
@@ -68,17 +68,17 @@ class GithubStrategy extends SiteStrategy
             'Authorization' => 'Bearer ' . $token,
         ];
 
-//        $response = $this->guzzleClient->request(
-//            'GET',
-//            $url,
-//            ['headers' => $headers]
-//        );
+        //        $response = $this->guzzleClient->request(
+        //            'GET',
+        //            $url,
+        //            ['headers' => $headers]
+        //        );
 
         // return json_decode($response->getBody()->getContents(), true);
         $result = [];
         $result['items'] = [];
 
-        for($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $text = [];
             $rng = rand();
             if ($rng % 3 === 0) {
@@ -113,12 +113,12 @@ class GithubStrategy extends SiteStrategy
     }
 
     /**
-     * @param HsClientResponseData $response
-     * @param array $issues
+     * @param HsClientResponseTransfer $response
+     * @param array                    $issues
      *
-     * @return HsClientResponseData
+     * @return HsClientResponseTransfer
      */
-    private function takeTexts(HsClientResponseData $response, array $issues): HsClientResponseData
+    private function takeTexts(HsClientResponseTransfer $response, array $issues): HsClientResponseTransfer
     {
         $texts = [];
         foreach ($issues['items'] as $item) {

@@ -2,13 +2,14 @@
 
 namespace App\HsRedis;
 
+use App\Core\CoreFactory;
 use App\HsRedis\Model\HsRedis;
 use App\HsRedis\Model\HsRedisInterface;
 use Predis\Client as PredisClient;
 
-class HsRedisFactory
+class HsRedisFactory extends CoreFactory
 {
-    private static ?PredisClient $predisClient = NULL;
+    private static ?PredisClient $predisClient = null;
 
     /**
      * @return \App\HsRedis\Model\HsRedisInterface
