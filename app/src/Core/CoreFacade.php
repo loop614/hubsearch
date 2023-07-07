@@ -5,23 +5,19 @@ namespace App\Core;
 abstract class CoreFacade implements CoreFacadeInterface
 {
     /**
-     * @var CoreFactory|null
+     * @var CoreFactoryInterface|null
      */
-    protected ?CoreFactory $factory = null;
+    protected ?CoreFactoryInterface $factory = null;
 
     /**
-     * @return \App\Core\CoreFactory
+     * @return \App\Core\CoreFactoryInterface
      */
-    protected function getFactory(): CoreFactory
+    protected function getFactory(): CoreFactoryInterface
     {
         if ($this->factory === null) {
             $facadeClassName = get_class($this);
             $facadeNameParts = explode("\\", $facadeClassName);
-            $facadeName = end($facadeNameParts);
-            array_pop($facadeNameParts);
-            $factoryName = str_replace("Facade", "Factory", $facadeName);
-            $factoryNameWithNamespace = implode("\\", [...$facadeNameParts, $factoryName]);
-            $factoryNameWithNamespace = "\\" . $factoryNameWithNamespace;
+            $factoryNameWithNamespace = "\\" . implode("\\", [$facadeNameParts[0], $facadeNameParts[1], $facadeNameParts[1] . 'Factory']);
             $this->factory = new $factoryNameWithNamespace();
         }
 

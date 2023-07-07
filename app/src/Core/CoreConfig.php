@@ -2,6 +2,6 @@
 
 namespace App\Core;
 
-abstract class CoreConfig
+abstract class CoreConfig implements CoreConfigInterface
 {
 }

@@ -2,34 +2,31 @@
 
 namespace App\Core\Controller;
 
-use App\Core\CoreFacade;
-use App\Core\CoreFactory;
+use App\Core\CoreFacadeInterface;
+use App\Core\CoreFactoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 abstract class CoreController extends AbstractController implements CoreControllerInterface
 {
     /**
-     * @var \App\Core\CoreFacade|null
+     * @var \App\Core\CoreFacadeInterface|null
      */
-    protected ?CoreFacade $facade = null;
+    protected ?CoreFacadeInterface $facade = null;
 
     /**
-     * @var \App\Core\CoreFactory|null
+     * @var \App\Core\CoreFactoryInterface|null
      */
-    protected ?CoreFactory $factory = null;
+    protected ?CoreFactoryInterface $factory = null;
 
     /**
-     * @return \App\Core\CoreFacade
+     * @return \App\Core\CoreFacadeInterface
      */
-    protected function getFacade(): CoreFacade
+    protected function getFacade(): CoreFacadeInterface
     {
         if ($this->facade === null) {
             $controllerClassName = get_class($this);
             $controllerNameParts = explode("\\", $controllerClassName);
-            $controllerName = end($controllerNameParts);
-            $facadeName = str_replace("Controller", "Facade", $controllerName);
-            $facadeNameWithNamespace = implode("\\", [$controllerNameParts[0], $controllerNameParts[1], $facadeName]);
-            $facadeNameWithNamespace = "\\" . $facadeNameWithNamespace;
+            $facadeNameWithNamespace = "\\" . implode("\\", [$controllerNameParts[0], $controllerNameParts[1], $controllerNameParts[1] . 'Facade']);
             $this->facade = new $facadeNameWithNamespace();
         }
 
@@ -37,17 +34,14 @@ abstract class CoreController extends AbstractController implements CoreControll
     }
 
     /**
-     * @return \App\Core\CoreFactory
+     * @return \App\Core\CoreFactoryInterface
      */
-    protected function getFactory(): CoreFactory
+    protected function getFactory(): CoreFactoryInterface
     {
         if ($this->factory === null) {
             $controllerClassName = get_class($this);
             $controllerNameParts = explode("\\", $controllerClassName);
-            $controllerName = end($controllerNameParts);
-            $factoryName = str_replace("Controller", "Factory", $controllerName);
-            $factoryNameWithNamespace = implode("\\", [$controllerNameParts[0], $controllerNameParts[1], $factoryName]);
-            $factoryNameWithNamespace = "\\" . $factoryNameWithNamespace;
+            $factoryNameWithNamespace = "\\" .implode("\\", [$controllerNameParts[0], $controllerNameParts[1], $controllerNameParts[1] . 'Factory']);
             $this->factory = new $factoryNameWithNamespace();
         }
 
