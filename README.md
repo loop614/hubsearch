@@ -1,5 +1,5 @@
 ## Description
-- symfony project with core layer inspired by [Spryker kernel](https://github.com/spryker/spryker-core/tree/master/Bundles/Kernel/src/Spryker/Zed/Kernel)
+- symfony project example
 - search Github issues and display number of rocks/sucks words with 1-10 grade
 - has redis cache
 

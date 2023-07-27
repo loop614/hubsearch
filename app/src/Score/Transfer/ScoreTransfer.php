@@ -2,9 +2,7 @@
 
 namespace App\Score\Transfer;
 
-use App\Core\Transfer\CoreTransfer;
-
-final class ScoreTransfer extends CoreTransfer
+final class ScoreTransfer
 {
     /**
      * @var float|null

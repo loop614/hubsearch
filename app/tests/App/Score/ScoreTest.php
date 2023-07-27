@@ -3,8 +3,8 @@
 namespace App\Score;
 
 use App\HsClient\Carry\HsClientResponseData;
-use App\HsClient\HsClientFacadeInterface;
-use App\HsRedis\HsRedisFacadeInterface;
+use App\HsClient\HubSearchClientFacadeInterface;
+use App\HsRedis\HubSearchRedisFacadeInterface;
 use App\Score\Carry\ScoreData;
 use App\Score\Model\Score;
 use App\Score\Model\ScoreInterface;
@@ -14,14 +14,14 @@ use PHPUnit\Framework\MockObject\MockObject;
 class UserTest extends Unit
 {
     /**
-     * @var \App\HsRedis\HsRedisFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var \App\HsRedis\HubSearchRedisFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
      */
-    private HsRedisFacadeInterface|MockObject $mockHsRedisFacade;
+    private HubSearchRedisFacadeInterface|MockObject $mockHsRedisFacade;
 
     /**
-     * @var \App\HsClient\HsClientFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var \App\HsClient\HubSearchClientFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
      */
-    private HsClientFacadeInterface|MockObject $mockHsClientFacade;
+    private HubSearchClientFacadeInterface|MockObject $mockHsClientFacade;
 
     /**
      * @var \App\Score\Model\ScoreInterface
@@ -70,18 +70,18 @@ class UserTest extends Unit
     }
 
     /**
-     * @return \App\HsRedis\HsRedisFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @return \App\HsRedis\HubSearchRedisFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
      */
-    private function getMochHsRedisFacade(): HsRedisFacadeInterface|MockObject
+    private function getMochHsRedisFacade(): HubSearchRedisFacadeInterface|MockObject
     {
-        return $this->createMock(HsRedisFacadeInterface::class);
+        return $this->createMock(HubSearchRedisFacadeInterface::class);
     }
 
     /**
-     * @return \App\HsClient\HsClientFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @return \App\HsClient\HubSearchClientFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
      */
-    private function getMockHsClientFacade(): HsClientFacadeInterface|MockObject
+    private function getMockHsClientFacade(): HubSearchClientFacadeInterface|MockObject
     {
-        return $this->createMock(HsClientFacadeInterface::class);
+        return $this->createMock(HubSearchClientFacadeInterface::class);
     }
 }

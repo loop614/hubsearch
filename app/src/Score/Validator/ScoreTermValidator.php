@@ -2,12 +2,9 @@
 
 namespace App\Score\Validator;
 
-use App\Core\Validator\CoreValidator;
+use App\Score\ScoreConfig;
 
-/**
- * @method \App\Score\ScoreConfig getConfig()
- */
-class ScoreTermValidator extends CoreValidator implements ScoreTermValidatorInterface
+class ScoreTermValidator implements ScoreTermValidatorInterface
 {
     /**
      * @param string|bool $termInput
@@ -16,6 +13,6 @@ class ScoreTermValidator extends CoreValidator implements ScoreTermValidatorInte
      */
     public function validateScoreTerm(string|bool $termInput): bool
     {
-        return $termInput && strlen($termInput) < $this->getConfig()->getMaxTermSize();
+        return $termInput && strlen($termInput) < ScoreConfig::MAX_TERM_SIZE;
     }
 }

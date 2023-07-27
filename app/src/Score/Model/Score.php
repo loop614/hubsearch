@@ -2,33 +2,22 @@
 
 namespace App\Score\Model;
 
-use App\HsClient\HsClientFacadeInterface;
-use App\HsClient\Model\Strategy\Exception\HsClientStrategyException;
-use App\HsRedis\HsRedisFacadeInterface;
+use App\HubSearchClient\HubSearchClientFacadeInterface;
+use App\HubSearchClient\Model\Strategy\Exception\HubSearchClientStrategyException;
+use App\HubSearchRedis\HubSearchRedisFacadeInterface;
 use App\Score\ScoreConfig;
 use App\Score\Transfer\ScoreTransfer;
 
-class Score implements ScoreInterface
+final class Score implements ScoreInterface
 {
     /**
-     * @var \App\HsRedis\HsRedisFacadeInterface
+     * @param \App\HubSearchRedis\HubSearchRedisFacadeInterface $HubSearchRedisFacade
+     * @param \App\HubSearchClient\HubSearchClientFacadeInterface $HubSearchClientFacade
      */
-    private HsRedisFacadeInterface $hsRedisFacade;
-
-    /**
-     * @var \App\HsClient\HsClientFacadeInterface
-     */
-    private HsClientFacadeInterface $hsClientFacade;
-
-    /**
-     * @param \App\HsRedis\HsRedisFacadeInterface   $hsRedisFacade
-     * @param \App\HsClient\HsClientFacadeInterface $hsClientFacade
-     */
-    public function __construct(HsRedisFacadeInterface $hsRedisFacade, HsClientFacadeInterface $hsClientFacade)
-    {
-        $this->hsRedisFacade = $hsRedisFacade;
-        $this->hsClientFacade = $hsClientFacade;
-    }
+    public function __construct(
+        private readonly HubSearchRedisFacadeInterface  $HubSearchRedisFacade,
+        private readonly HubSearchClientFacadeInterface $HubSearchClientFacade
+    ) {}
 
     /**
      * @param \App\Score\Transfer\ScoreTransfer $scoreData
@@ -37,21 +26,21 @@ class Score implements ScoreInterface
      */
     public function hydrateScore(ScoreTransfer $scoreData): ScoreTransfer
     {
-        $scoreData = $this->hsRedisFacade->hydrateScore($scoreData);
+        $scoreData = $this->HubSearchRedisFacade->hydrateScore($scoreData);
         if ($scoreData->getScore() !== null) {
             $scoreData->setMessage('Found this in the basement');
             return $scoreData;
         }
 
         try {
-            $clientResponse = $this->hsClientFacade->getResponseData($scoreData);
-        } catch (HsClientStrategyException $e) {
+            $clientResponse = $this->HubSearchClientFacade->getResponseData($scoreData);
+        } catch (HubSearchClientStrategyException $e) {
             $scoreData->setMessage('Not a good day for ' . $scoreData->getSite() . '. ' . $e->getMessage());
             return $scoreData;
         }
 
         $scoreData = $this->calculateScore($scoreData, $clientResponse->getTexts());
-        $this->hsRedisFacade->setScore($scoreData);
+        $this->HubSearchRedisFacade->setScore($scoreData);
 
         return $scoreData;
     }

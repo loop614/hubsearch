@@ -2,14 +2,16 @@
 
 namespace App\Score;
 
-use App\Core\CoreFacade;
+use App\Score\Model\ScoreInterface;
 use App\Score\Transfer\ScoreTransfer;
 
-/**
- * @method \App\Score\ScoreFactory getFactory()
- */
-class ScoreFacade extends CoreFacade implements ScoreFacadeInterface
+class ScoreFacade implements ScoreFacadeInterface
 {
+    /**
+     * @param \App\Score\Model\ScoreInterface $score
+     */
+    public function __construct(private readonly ScoreInterface $score) {}
+
     /**
      * @param \App\Score\Transfer\ScoreTransfer $scoreTransfer
      *
@@ -17,6 +19,6 @@ class ScoreFacade extends CoreFacade implements ScoreFacadeInterface
      */
     public function hydrateScore(ScoreTransfer $scoreTransfer): ScoreTransfer
     {
-        return $this->getFactory()->createScore()->hydrateScore($scoreTransfer);
+        return $this->score->hydrateScore($scoreTransfer);
     }
 }
