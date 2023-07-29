@@ -8,13 +8,5 @@ abstract class SiteStrategy implements SiteStrategyInterface
 {
     protected static $baererToken = '';
 
-    /**
-     * @var \GuzzleHttp\Client
-     */
-    protected GuzzleClient $guzzleClient;
-
-    public function __construct()
-    {
-        $this->guzzleClient = new GuzzleClient();;
-    }
+    public function __construct(protected readonly GuzzleClient $guzzleClient) {}
 }

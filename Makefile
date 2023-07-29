@@ -68,6 +68,10 @@ rebuild:
 	docker compose build --no-cache
 	docker compose up --remove-orphans
 
+cache:
+	$(HUBSEARCHCOMPOSER) clear-cache
+	rm -rf var/cache
+
 nuke:
 	$(HUBSEARCH) rm -rf /srv/www/
 
